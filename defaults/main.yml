@@ -1,0 +1,15 @@
+---
+
+tdagent_version: 2.3.5
+tdagent_rpm: "td-agent-{{ tdagent_version }}"
+
+tdagent_tcp_in_port: 24224
+tdagent_http_in_port: 9880
+
+tdagent_enable_monitoring: true
+tdagent_monitor_port: 24220
+
+tdagent_enable_debug: true
+tdagent_debug_port: 24230
+
+tdagent_plugins: []

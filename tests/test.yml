@@ -1,0 +1,10 @@
+---
+
+- hosts: all
+  become: yes
+  roles:
+    - role: ansible-role-fluentd
+      tdagent_version: "2.3.5"
+      tdagent_plugins:
+        - name: fluent-plugin-elasticsearch
+          version: "1.9.5"

@@ -1,0 +1,54 @@
+# Basic td-agent conf
+# See http://docs.fluentd.org/articles/config-file for more info
+
+# Log out logs marked with `debug` tag
+# See http://docs.fluentd.org/articles/logging#capture-fluentd-logs for more info
+<match debug.**>
+    @type stdout
+</match>
+
+# TCP input
+# Receive events from tcp
+# This is used by log forwarding and the fluent-cat command
+# See http://docs.fluentd.org/articles/in_forward for more info
+<source>
+    @type forward
+    port {{ tdagent_tcp_in_port }}
+    bind 0.0.0.0
+</source>
+
+# HTTP input
+# Recieve records via HTTP POST
+# See http://docs.fluentd.org/articles/in_http for more info
+<source>
+    @type http
+    port {{ tdagent_http_in_port }}
+    bind 0.0.0.0
+</source>
+
+{% if tdagent_enable_monitoring %}
+# Monitoring agent
+# Used to retrieve internal metrics from fluentd in JSON via HTTP
+# See http://docs.fluentd.org/articles/monitoring for more info
+<source>
+    @type monitor_agent
+    port {{ tdagent_monitor_port }}
+    bind 0.0.0.0
+</source>
+
+{% endif %}
+{% if tdagent_enable_debug %}
+# Debug
+# Connect to this using tools such as:
+# - /usr/lib64/fluent/ruby/bin/fluent-debug
+# - https://github.com/choplin/fluent-tail
+# See http://docs.fluentd.org/articles/monitoring#debug-port for more info
+<source>
+    @type debug_agent
+    bind 127.0.0.1
+    port {{ tdagent_debug_port }}
+</source>
+
+{% endif %}
+# Add your app-specific config to this directory
+@include /etc/td-agent/conf.d/*.conf

@@ -1,0 +1,53 @@
+---
+
+- name: Setup treasuredata yum repo
+  copy:
+    src: td.repo
+    dest: /etc/yum.repos.d/td.repo
+    mode: 0444
+
+- name: Install td-agent
+  yum:
+    name: "{{ tdagent_rpm }}"
+    state: present
+  notify: bounce td-agent
+
+- name: Create td-agent conf.d directory
+  file:
+    name: /etc/td-agent/conf.d
+    state: directory
+    mode: 0555
+    owner: root
+    group: root
+
+- name: Add basic td-agent config
+  template:
+    src: td-agent.conf.j2
+    dest: /etc/td-agent/td-agent.conf
+    mode: 0444
+  notify: reload td-agent
+
+- name: Install curl headers and gcc to build plugins
+  yum:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - gcc
+    - libcurl-devel
+  when: tdagent_plugins
+
+- name: Install td-agent plugin gems
+  gem:
+    name: "{{ item.name }}"
+    version: "{{ item.version }}"
+    executable: /usr/sbin/td-agent-gem
+    state: present
+    user_install: no
+  with_items: "{{ tdagent_plugins }}"
+  notify: bounce td-agent
+
+- name: Start td-agent
+  service:
+    name: td-agent
+    state: started
+    enabled: yes

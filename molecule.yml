@@ -1,0 +1,15 @@
+---
+ansible:
+  playbook: tests/test.yml
+
+docker:
+  containers:
+    - name: fluentd_centos6
+      image: centos
+      image_version: 6
+    - name: fluentd_centos7
+      # A systemd enabled centos7 image only has one version (latest)
+      image: centos/systemd
+      image_version: latest
+      # Must be privileged to enable systemd
+      privileged: true

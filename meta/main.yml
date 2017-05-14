@@ -1,0 +1,20 @@
+galaxy_info:
+  author: Companies House
+  description: Installs td-agent (fluentd) with a basic config
+  license: MIT
+
+  min_ansible_version: 2.0
+
+  github_branch: master
+
+  platforms:
+  - name: EL
+    versions:
+    - 6
+    - 7
+
+  galaxy_tags:
+    - fluentd
+    - td-agent
+
+dependencies: []
