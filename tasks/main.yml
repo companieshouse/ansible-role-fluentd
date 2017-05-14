@@ -6,6 +6,25 @@
     dest: /etc/yum.repos.d/td.repo
     mode: 0444
 
+- name: Check td-agent version
+  command: td-agent --version
+  register: tdagent_version_check
+  failed_when: false
+  changed_when: false
+  check_mode: no
+
+- name: Stop old td-agent
+  service:
+    name: td-agent
+    state: stopped
+  when: "'td-agent 0.10' in tdagent_version_check"
+
+- name: Remove old td-agent
+  yum:
+    name: td-agent
+    state: absent
+  when: "'td-agent 0.10' in tdagent_version_check"
+
 - name: Install td-agent
   yum:
     name: "{{ tdagent_rpm }}"
