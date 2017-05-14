@@ -1,7 +1,7 @@
 Ansible Role Fluentd
 ====================
 
-An ansible role for installing td-agent (the EL packaged version of fluentd) version >= 2.0.0 with a basic config.
+An ansible role for installing td-agent (the EL packaged version of fluentd) version >= 2.3.4 with a basic config.
 
 Requirements
 ------------
@@ -13,7 +13,7 @@ Role Variables
 
 Variable                  |Default                            | Description
 --------------------------|:---------------------------------:|-------------
-tdagent_version           |`2.3.5`                            |The td-agent version to install (must be >= 2.0.0)
+tdagent_version           |`2.3.5`                            |The td-agent version to install (must be >= 2.3.4)
 tdagent_rpm               |`"td-agent-{{ tdagent_version }}"` |The td-agent rpm to install
 tdagent_tcp_in_port       |`24224`                            |The input port for TCP, used by log forwarding and the fluent-cat
 tdagent_http_in_port      |`9880`                             |The input port for HTTP POST
